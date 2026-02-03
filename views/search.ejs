@@ -1,0 +1,28 @@
+<section class="page-head">
+  <h1>Search</h1>
+  <p>Masukkan judul series untuk menemukan hasil terbaik.</p>
+</section>
+
+<% if (!data.q) { %>
+  <div class="state">Ketik kata kunci di atas untuk mulai mencari.</div>
+<% } else if (!data.list || data.list.length === 0) { %>
+  <div class="state">Tidak ada hasil untuk "<%= data.q %>".</div>
+<% } else { %>
+  <section class="grid">
+    <% data.list.forEach((item) => { %>
+      <% const id = item.series_id || item.id || item.slug; %>
+      <% const title = item.title || item.name || "Untitled"; %>
+      <% const poster = item.poster || item.thumbnail || item.cover || ""; %>
+      <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=480&q=80` : ""; %>
+      <a class="card" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>">
+        <div class="card-poster lazy-bg" data-bg="<%= posterUrl %>"></div>
+        <div class="card-body">
+          <h3><%= title %></h3>
+        </div>
+        <div class="card-overlay">
+          <span>Detail</span>
+        </div>
+      </a>
+    <% }); %>
+  </section>
+<% } %>

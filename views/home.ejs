@@ -1,0 +1,141 @@
+<% const spotlight = data.list?.[0]; %>
+<% const heroSlides = (data.list || []).slice(0, 5); %>
+<% const recommended = data.list?.filter((item) => item.type === "recommended") || []; %>
+<% const discovery = data.list?.filter((item) => item.type === "discovery") || []; %>
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="pill">Streaming katalog drama</span>
+    <h1>Temukan cerita terbaik, tonton tanpa jeda</h1>
+    <p>Jelajahi ratusan series, pilih episode favorit, dan nikmati player HTML5 yang responsif.</p>
+  </div>
+  <div class="hero-stack">
+    <% if (heroSlides.length) { %>
+      <div class="hero-carousel" data-action="hero-carousel">
+        <% heroSlides.forEach((item, index) => { %>
+          <% const id = item.series_id || item.id || item.slug; %>
+          <% const title = item.title || item.name || "Spotlight"; %>
+          <% const poster = item.poster || item.thumbnail || item.cover || ""; %>
+          <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=1200&q=80` : ""; %>
+          <a class="spotlight-card <%= index === 0 ? "active" : "" %> <%= index === 0 ? "" : "lazy-bg" %>" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>" <% if (index === 0) { %>style="background-image: url('<%= posterUrl %>');"<% } else { %>data-bg="<%= posterUrl %>"<% } %>>
+            <div class="spotlight-overlay">
+              <span class="tag">Spotlight</span>
+              <h2><%= title %></h2>
+              <span class="cta">Lihat detail</span>
+            </div>
+          </a>
+        <% }); %>
+        <div class="carousel-dots">
+          <% heroSlides.forEach((_, index) => { %>
+            <button class="dot <%= index === 0 ? "active" : "" %>" type="button" data-dot="<%= index %>"></button>
+          <% }); %>
+        </div>
+      </div>
+    <% } else if (spotlight) { %>
+      <% const id = spotlight.series_id || spotlight.id || spotlight.slug; %>
+      <% const title = spotlight.title || spotlight.name || "Spotlight"; %>
+      <% const poster = spotlight.poster || spotlight.thumbnail || spotlight.cover || ""; %>
+      <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=1200&q=80` : ""; %>
+      <a class="spotlight-card" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>" style="background-image: url('<%= posterUrl %>');">
+        <div class="spotlight-overlay">
+          <span class="tag">Spotlight</span>
+          <h2><%= title %></h2>
+          <span class="cta">Lihat detail</span>
+        </div>
+      </a>
+    <% } %>
+    <div class="stat-card">
+      <strong><%= data.list?.length || 0 %>+</strong>
+      <span>Series baru hari ini</span>
+    </div>
+  </div>
+</section>
+
+<section class="rail" id="continue-rail">
+  <div class="rail-head">
+    <h2>Continue Watching</h2>
+    <span>Lanjutkan episode terakhir</span>
+  </div>
+  <div class="rail-track" id="continue-track">
+    <div class="state">Belum ada riwayat tontonan.</div>
+  </div>
+</section>
+
+<% if (recommended.length) { %>
+  <section class="rail">
+    <div class="rail-head">
+      <h2>Recommended</h2>
+      <span>Kurasi untuk kamu</span>
+    </div>
+    <div class="rail-track">
+      <% recommended.forEach((item) => { %>
+        <% const id = item.series_id || item.id || item.slug; %>
+        <% const title = item.title || item.name || "Untitled"; %>
+        <% const poster = item.poster || item.thumbnail || item.cover || ""; %>
+        <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=480&q=80` : ""; %>
+      <a class="card card--tall" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>">
+        <div class="card-poster lazy-bg" data-bg="<%= posterUrl %>"></div>
+        <div class="card-body">
+          <h3><%= title %></h3>
+        </div>
+        <div class="card-overlay">
+          <span>Detail</span>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
+
+<% if (discovery.length) { %>
+  <section class="rail">
+    <div class="rail-head">
+      <h2>Discovery</h2>
+      <span>Temukan favorit baru</span>
+    </div>
+    <div class="rail-track">
+      <% discovery.forEach((item) => { %>
+        <% const id = item.series_id || item.id || item.slug; %>
+        <% const title = item.title || item.name || "Untitled"; %>
+        <% const poster = item.poster || item.thumbnail || item.cover || ""; %>
+        <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=480&q=80` : ""; %>
+      <a class="card card--tall" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>">
+        <div class="card-poster lazy-bg" data-bg="<%= posterUrl %>"></div>
+        <div class="card-body">
+          <h3><%= title %></h3>
+        </div>
+        <div class="card-overlay">
+          <span>Detail</span>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
+
+<section class="grid" id="home-grid" data-offset="<%= data.offset || 0 %>">
+  <% if (!data.list || data.list.length === 0) { %>
+    <div class="state">Tidak ada data.</div>
+  <% } else { %>
+    <% data.list.forEach((item) => { %>
+      <% const id = item.series_id || item.id || item.slug; %>
+      <% const title = item.title || item.name || "Untitled"; %>
+      <% const poster = item.poster || item.thumbnail || item.cover || ""; %>
+      <% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=480&q=80` : ""; %>
+      <a class="card" data-series-id="<%= id %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>" href="/series/<%= id %>">
+        <div class="card-poster lazy-bg" data-bg="<%= posterUrl %>"></div>
+        <div class="card-body">
+          <h3><%= title %></h3>
+        </div>
+        <div class="card-overlay">
+          <span>Detail</span>
+        </div>
+      </a>
+    <% }); %>
+  <% } %>
+</section>
+
+<div class="load-wrap">
+  <button class="load-more" data-action="load-home">Muat lagi</button>
+  <div class="status" id="home-status"></div>
+</div>

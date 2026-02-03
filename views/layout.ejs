@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <% if (data?.preloadImage) { %>
+      <link rel="preload" as="image" href="<%= data.preloadImage %>" />
+    <% } %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script defer src="/js/app.js"></script>
+  </head>
+  <body data-page="<%= data?.page || "" %>">
+    <div class="bg"></div>
+    <header class="site-header">
+      <div class="brand">
+        <a class="logo" href="/">Dramahub</a>
+        <nav class="nav-links">
+          <a href="/">Browse</a>
+          <a href="/search">Search</a>
+        </nav>
+      </div>
+      <div class="header-actions">
+        <form class="search-inline" action="/search" method="get">
+          <input type="text" name="q" placeholder="Cari series..." value="<%= data?.q || "" %>" />
+          <button type="submit">Cari</button>
+        </form>
+        <button class="theme-toggle" type="button" data-action="theme-toggle" aria-label="Toggle theme">
+          <span>Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <%- include(body, { data }) %>
+    </main>
+
+    <footer class="site-footer">
+      <span>Streaming katalog video • Proxy API lokal</span>
+    </footer>
+  </body>
+</html>

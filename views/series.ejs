@@ -1,0 +1,43 @@
+<% const poster = data.series.poster || data.series.thumbnail || data.series.cover || ""; %>
+<% const posterUrl = poster ? `/api/image?url=${encodeURIComponent(poster)}&w=480&q=80` : ""; %>
+<% const title = data.series.title || data.series.name || "Series"; %>
+<% const synopsis = data.series.synopsis || data.series.description || ""; %>
+<% const displayTitle = title && title !== "Unknown" ? title : ""; %>
+
+<section class="series-head" data-series-id="<%= data.seriesId || data.series.series_id || data.series.id || "" %>" data-series-title="<%= title %>" data-series-poster="<%= poster %>">
+  <div class="series-poster" style="background-image: url('<%= posterUrl %>');"></div>
+  <div class="series-info">
+    <h1 id="series-title"><%= displayTitle || "Memuat judul..." %></h1>
+    <p><%= synopsis %></p>
+  </div>
+</section>
+
+<section class="episodes">
+  <h2>Daftar Episode</h2>
+  <div class="series-player">
+    <div class="series-player-meta">
+      <a class="back-link back-link--compact" href="/">Kembali</a>
+      <div class="quality-picker">
+        <label for="series-quality">Resolusi</label>
+        <select id="series-quality" class="quality-select">
+          <option value="">Auto</option>
+        </select>
+      </div>
+    </div>
+    <video id="series-player" controls playsinline poster="<%= posterUrl %>">
+      <source id="series-player-source" src="" type="video/mp4" />
+      Browser kamu tidak mendukung video HTML5.
+    </video>
+    <div class="player-overlay" id="series-player-overlay">Pilih episode untuk memutar.</div>
+  </div>
+  <div class="episode-footer">
+    <button type="button" class="series-nav" data-action="episode-prev">Prev</button>
+    <div class="episode-info" id="series-episode-title">Memuat episode...</div>
+    <button type="button" class="series-nav" data-action="episode-next">Next</button>
+  </div>
+  <% if (!data.episodes || data.episodes.length === 0) { %>
+    <div class="state">Episode belum tersedia.</div>
+  <% } %>
+  <% const episodesPayload = data.episodes || []; %>
+  <script type="application/json" id="series-episodes-data"><%- JSON.stringify(episodesPayload) %></script>
+</section>
