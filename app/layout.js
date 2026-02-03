@@ -26,6 +26,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
+      <head>
+        <link rel="preconnect" href="https://dramahubv1.vercel.app" />
+        <link rel="preconnect" href="https://images.weserv.nl" />
+      </head>
       <body className={`${manrope.variable} ${spaceGrotesk.variable}`} data-theme="cinema">
         <div className="bg" aria-hidden="true"></div>
         <header className="site-header">
