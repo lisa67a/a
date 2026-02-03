@@ -782,7 +782,7 @@ function initThemeToggle() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function boot() {
   initHomePagination();
   initPlayerOverlay();
   initHeroCarousel();
@@ -796,4 +796,10 @@ document.addEventListener("DOMContentLoaded", () => {
   applySeriesMeta();
   initLazyBackgrounds();
   initThemeToggle();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", boot);
+} else {
+  boot();
+}
